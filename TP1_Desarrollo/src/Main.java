@@ -1,6 +1,8 @@
 import Abstract_Factory.*;
+import Builder.Usuario;
 import Factory_Method.Libro;
 import Factory_Method.LogisticaLibro;
+import Prototype.Prestamo;
 import Singleton.Database;
 
 public class Main {
@@ -10,6 +12,7 @@ public class Main {
         //SINGLETON
 
 
+        System.out.println("=====================Singleton=====================\n");
         Runnable task1 = () -> {
             Database database = Database.getDatabase("Uno");
             System.out.println(Thread.currentThread().getName() + " obtuvo valor: " + database.getValue());
@@ -36,6 +39,7 @@ public class Main {
         //FACTORY METHOD
 
 
+        System.out.println("=====================Factory Method=====================\n");
         Libro libro1 = LogisticaLibro.fabricar("Alicia en el pais de las maravillas","joa",30000,"Digital");
         Libro libro2 = LogisticaLibro.fabricar("Padre rico padre pobre", "joafunes",50000,"Fisico");
         LogisticaLibro.fabricar("Cien años de soledad", "Gabriel García Márquez", 25000, "Fisico");
@@ -52,6 +56,7 @@ public class Main {
         //ABSTRACT FACTORY
 
 
+        System.out.println("=====================Abstract Factory=====================\n");
         AbstractFactoryUI adminFac = new AdminFactory();
         InterfazUI admin = adminFac.crearInterfazUI();
         admin.mostrarInformacionLibro(libro1);
@@ -67,5 +72,39 @@ public class Main {
         AbstractFactoryEnvio envioExpressFac = new EnvioExpressFactory();
         MetodoEnvio envioexpress = envioExpressFac.crearMetodoEnvio();
         envioexpress.enviarLibro(libro2);
+
+
+        //BUILDER
+
+
+        System.out.println("=====================Builder=====================\n");
+        Usuario u = new Usuario.Builder()
+                .nombre("Joaquin")
+                .email("jfunes186@gmail.com")
+                .domicilio("Pedro Conde 630")
+                .telefono("2634279747")
+                .build();
+
+        Usuario.mostrar(u);
+
+
+        //Prototype
+
+
+        System.out.println("=====================Prototype=====================\n");
+        Prestamo prestamo = new Prestamo(libro1, u, "30/08/2025", "31/12/2025");
+        Prestamo copia1 = prestamo.clone();
+        Prestamo copia2 = prestamo.clone();
+
+        copia1.setLibro(libro2);
+        copia2.setFechaInicio("2/11/2025");
+
+        System.out.println(prestamo.getLibro());
+        System.out.println(copia1.getLibro());
+        System.out.println(copia2.getLibro());
+
+        System.out.println(prestamo.getFechaInicio());
+        System.out.println(copia1.getFechaInicio());
+        System.out.println(copia2.getFechaInicio());
     }
 }
